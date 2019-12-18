@@ -32,7 +32,7 @@ Quentin Cardinal
 
 ### Gestion de projet
 
-###### Lien vers notre Taiga [Taiga](https://tree.taiga.io/project/quentincar-hexabot/backlog).
+Lien vers notre [Taiga](https://tree.taiga.io/project/quentincar-hexabot/backlog).
 
 
 
