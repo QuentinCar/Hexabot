@@ -1,2 +1,0 @@
-phantomx/phantomx_control:phantomx/phantomx_description:phantomx/phantomx_gazebo
--DCATKIN_DEVEL_PREFIX=/home/cyril/Documents/uv5.8/Hexabot/workspaceRos/devel -DCMAKE_INSTALL_PREFIX=/home/cyril/Documents/uv5.8/Hexabot/workspaceRos/install -G Unix Makefiles
