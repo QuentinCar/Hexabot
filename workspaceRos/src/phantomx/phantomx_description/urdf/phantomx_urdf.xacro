@@ -82,7 +82,7 @@
         <sensor type="camera" name="camera_vision">
         <update_rate>30.0</update_rate>
         <camera name="head">
-            <horizontal_fov>1.57</horizontal_fov>
+            <horizontal_fov>0.616</horizontal_fov>
             <image>
                 <width>800</width>
                 <height>800</height>
@@ -217,6 +217,19 @@
             <child link="lamp"/>
             <origin xyz="0 0 0.025" rpy="0 ${-PI/2} 0" />
     </joint>
+
+
+    <gazebo>
+        <plugin name="light_control" filename="libLedPlugin.so">
+            <light>
+            <light>link/lamp</light>
+            <duration>0.5</duration>
+            <interval>0.5</interval>
+            </light>
+        </plugin>
+    </gazebo>
+
+
 
     
      <xacro:macro name="leg_l" params="xyz rpy suffix">
