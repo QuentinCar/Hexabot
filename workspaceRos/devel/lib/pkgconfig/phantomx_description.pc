@@ -1,0 +1,8 @@
+prefix=/home/cyril/Documents/uv5.8/Hexabot/workspaceRos/devel
+
+Name: phantomx_description
+Description: Description of phantomx_description
+Version: 0.1.0
+Cflags: 
+Libs: -L/home/cyril/Documents/uv5.8/Hexabot/workspaceRos/devel/lib 
+Requires: 
