@@ -1,8 +1,0 @@
-prefix=/home/cyril/Documents/uv5.8/Hexabot/workspaceRos/devel
-
-Name: phantomx_control
-Description: Description of phantomx_control
-Version: 1.0.0
-Cflags: 
-Libs: -L/home/cyril/Documents/uv5.8/Hexabot/workspaceRos/devel/lib 
-Requires: 
