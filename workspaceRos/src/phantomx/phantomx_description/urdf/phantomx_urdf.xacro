@@ -194,6 +194,7 @@
      </plugin>
     </gazebo>
 
+<!--
     <link name="lamp">
        <visual>
         <geometry>
@@ -229,7 +230,7 @@
         </plugin>
     </gazebo>
 
-
+-->
 
     
      <xacro:macro name="leg_l" params="xyz rpy suffix">
