@@ -19,15 +19,20 @@ Ceci est un template de dépôt Git pour le cours d'ingénierie système et mod�
 
 
 ## Groupe
+	AQADAC
 
 ### Membres
 
-###### A compléter avec les membres du groupe.
-
+Alexandre Argento
+Axel Porlan
+Aurelien Lebrun
+Cyril Cotsaftis
+David Brellmann
+Quentin Cardinal
 
 ### Gestion de projet
 
-###### A compléter avec le lien vers votre [Taiga](http://taiga.io).
+Lien vers notre [Taiga](https://tree.taiga.io/project/quentincar-hexabot/backlog).
 
 
 
