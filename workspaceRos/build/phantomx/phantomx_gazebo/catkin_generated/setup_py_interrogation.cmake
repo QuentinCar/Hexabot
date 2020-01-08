@@ -1,0 +1,6 @@
+set(phantomx_gazebo_SETUP_PY_VERSION "0.1.0")
+set(phantomx_gazebo_SETUP_PY_SCRIPTS "")
+set(phantomx_gazebo_SETUP_PY_PACKAGES "phantomx_gazebo")
+set(phantomx_gazebo_SETUP_PY_PACKAGE_DIRS "src/phantomx_gazebo")
+set(phantomx_gazebo_SETUP_PY_MODULES "")
+set(phantomx_gazebo_SETUP_PY_MODULE_DIRS "")
