@@ -1,0 +1,11 @@
+ 
+sudo apt-get update
+sudo apt-get install ros-melodic-effort-controllers
+
+gedit ~/.ignition/fuel/config.yaml
+
+replace
+url: https://api.ignitionfuel.org
+
+with
+url: https://api.ignitionrobotics.org
