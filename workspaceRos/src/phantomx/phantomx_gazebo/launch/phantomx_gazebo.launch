@@ -20,5 +20,7 @@
     <include file="$(find phantomx_control)/launch/phantomx_control.launch"/>
 
     <node name="phantomx_walker" pkg="phantomx_gazebo" type="walker.py" />
-
+    <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">
+    <param name="odom_frame" value="base_link" />
+    </node>
 </launch>

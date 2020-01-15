@@ -7,27 +7,33 @@ Ceci est un template de dépôt Git pour le cours d'ingénierie système et mod�
 
 ### Dépendences
 
-###### A compléter avec la/les dépendences.
+package hector_slam
 
 
 ### Démarrer la simulation
-
-###### A compléter avec la/les commande(s) à lancer.
 ```bash
-# TODO
+roslaunch phantomx_gazebo phatomx_gazebo.launch
+roslaunch phantomx_description diplay.launch
+rosrun phantomx_markers markerdisplay_marker
+rosrun phantomx_gazebo follow_wal
 ```
 
 
 ## Groupe
+	AQADAC
 
 ### Membres
 
-###### A compléter avec les membres du groupe.
-
+Alexandre Argento
+Axel Porlan
+Aurelien Lebrun
+Cyril Cotsaftis
+David Brellmann
+Quentin Cardinal
 
 ### Gestion de projet
 
-###### A compléter avec le lien vers votre [Taiga](http://taiga.io).
+Lien vers notre [Taiga](https://tree.taiga.io/project/quentincar-hexabot/backlog).
 
 
 
@@ -49,3 +55,16 @@ Le dossier `docs` contient tous les documents utiles au projet:
 ### Rapports
 
 Le dossier `reports` doit être rempli avec les rapports d'[objectifs](reports/GoalsTemplate.md) et de [rétrospectives](reports/DebriefTemplate.md) en suivant les deux templates mis à disposition. Ces deux rapports doivent être rédigés respectivement au début et à la fin de chaque sprint.
+
+## Repair Simulation
+```bash
+sudo apt-get update
+sudo apt-get install ros-melodic-effort-controllers
+gedit ~/.ignition/fuel/config.yaml
+```
+
+replace
+url: https://api.ignitionfuel.org
+
+with
+url: https://api.ignitionrobotics.org

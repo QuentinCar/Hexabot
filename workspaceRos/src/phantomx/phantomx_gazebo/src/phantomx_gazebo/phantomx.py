@@ -1,6 +1,7 @@
 import rospy
 import cv2
 import math
+import numpy
 import time
 import numpy as np
 from geometry_msgs.msg import Twist
@@ -45,6 +46,12 @@ class PhantomX:
 
         self._pub_cmd_vel = rospy.Publisher(ns + 'cmd_vel', Twist, queue_size=1)
         self._pub_coord_fissures = rospy.Publisher(ns + 'fissures_coord', Fissures, queue_size=1)
+
+        rospy.Subscriber('/scan', LaserScan, self._callback_scan)
+        self.scan_data = []
+        self.KP = KP
+        self.KI = KI
+        self.time = float(rospy.Time.to_sec(rospy.Time.now()))
 
         rospy.Subscriber('/scan', LaserScan, self._callback_scan)
         self.scan_data = []
@@ -133,6 +140,28 @@ class PhantomX:
             z = -sat
         return z
 
+    def _callback_scan(self, msg):  
+        self.scan_data = [msg.header.stamp, msg.ranges] 
+        self.now = float(rospy.Time.to_sec(rospy.Time.now()))
+
+    def follow_wall(self):
+        ranges = self.scan_data[1]
+        val1, val2 = numpy.mean(ranges[60:90]), numpy.mean(ranges[270:300])
+        e = val1 - val2
+
+        delta_t = (self.now - self.time)
+        self.time = self.now
+
+        P = e
+        I = e*delta_t
+        z = self.KI*I + self.KP*P
+
+        sat = 0.4
+        if z > sat :
+            z = sat
+        if z < -sat :
+            z = -sat
+        return z
 
 def interpolate(anglesa, anglesb, coefa):
     z = {}
