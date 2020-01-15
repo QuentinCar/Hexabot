@@ -27,5 +27,6 @@ catkin_package(
 )
 
 add_message_files(
+	FILES
 	Fissures.msg
 )
