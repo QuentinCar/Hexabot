@@ -8,26 +8,33 @@ Ceci est un template de dépôt Git pour le cours d'ingénierie système et mod�
 ### Dépendences
 
 ###### A compléter avec la/les dépendences.
+package hector_slam
 
-
-### Démarrer la simulation
 
 ###### A compléter avec la/les commande(s) à lancer.
 ```bash
-# TODO
+roslaunch phantomx_gazebo phatomx_gazebo.launch
+roslaunch phantomx_description diplay.launch
+rosrun phantomx_marker markerdisplay_marker
+rosrun phantomx_gazebo follow_wal
 ```
 
 
 ## Groupe
+	AQADAC
 
 ### Membres
 
-###### A compléter avec les membres du groupe.
-
+Alexandre Argento
+Axel Porlan
+Aurelien Lebrun
+Cyril Cotsaftis
+David Brellmann
+Quentin Cardinal
 
 ### Gestion de projet
 
-###### A compléter avec le lien vers votre [Taiga](http://taiga.io).
+Lien vers notre [Taiga](https://tree.taiga.io/project/quentincar-hexabot/backlog).
 
 
 
