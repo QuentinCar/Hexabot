@@ -7,11 +7,10 @@ Ceci est un template de dépôt Git pour le cours d'ingénierie système et mod�
 
 ### Dépendences
 
-###### A compléter avec la/les dépendences.
 package hector_slam
 
 
-###### A compléter avec la/les commande(s) à lancer.
+### Démarrer la simulation
 ```bash
 roslaunch phantomx_gazebo phatomx_gazebo.launch
 roslaunch phantomx_description diplay.launch
