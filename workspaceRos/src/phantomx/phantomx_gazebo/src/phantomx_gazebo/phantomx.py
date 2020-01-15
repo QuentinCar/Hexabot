@@ -1,14 +1,22 @@
 import rospy
+import cv2
+import math
 import time
+import numpy as np
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Float64
+from sensor_msgs.msg import LaserScan
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge, CvBridgeError
+
+from phantomx_gazebo.msg import Fissures
 
 
 class PhantomX:
     """Client ROS class for manipulating PhantomX in Gazebo"""
 
-    def __init__(self, ns='/phantomx/'):
+    def __init__(self, ns='/phantomx/', KP = 0.5, KI = 0.1):
         self.ns = ns
         self.joints = None
         self.angles = None
@@ -29,10 +37,20 @@ class PhantomX:
             p = rospy.Publisher(
                 ns + j + '_position_controller/command', Float64, queue_size=1)
             self._pub_joints[j] = p
+            
+        self._bridge = CvBridge()
+        self._image_sub = rospy.Subscriber("image_raw", Image, self.camera_callback)
 
         rospy.sleep(1)
 
         self._pub_cmd_vel = rospy.Publisher(ns + 'cmd_vel', Twist, queue_size=1)
+        self._pub_coord_fissures = rospy.Publisher(ns + 'fissures_coord', Fissures, queue_size=1)
+
+        rospy.Subscriber('/scan', LaserScan, self._callback_scan)
+        self.scan_data = []
+        self.KP = KP
+        self.KI = KI
+        self.time = float(rospy.Time.to_sec(rospy.Time.now()))
 
     def set_walk_velocity(self, x, y, t):
         msg = Twist()
@@ -40,6 +58,24 @@ class PhantomX:
         msg.linear.y = y
         msg.angular.z = t
         self._pub_cmd_vel.publish(msg)
+        
+    def camera_callback(self, data):
+        try:
+            cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
+        except CvBridgeError as e:
+            print(e)
+        
+        cv_edges = cv2.Canny(cv_image,6,16)
+        distance = 0
+        horizontal_fov = 0.616
+        pixel_size = 2*distance*math.tan(horizontal_fov/2)/cv_edges.shape[1]
+        coords = np.argwhere(cv_edges>0)*pixel_size
+        msg = Fissures()
+        msg.x = coords[:,0]
+        msg.y = -distance
+        msg.z = coords[:,1]
+        self._pub_coord_fissures.publish(msg)
+        
 
     def _cb_joints(self, msg):
         if self.joints is None:
@@ -73,6 +109,29 @@ class PhantomX:
             angles = interpolate(stop_angles, start_angles, ratio)
             self.set_angles(angles)
             r.sleep()
+            
+    def _callback_scan(self, msg):  
+        self.scan_data = [msg.header.stamp, msg.ranges] 
+        self.now = float(rospy.Time.to_sec(rospy.Time.now()))
+
+    def follow_wall(self):
+        ranges = self.scan_data[1]
+        val1, val2 = np.mean(ranges[60:90]), np.mean(ranges[270:300])
+        e = val1 - val2
+
+        delta_t = (self.now - self.time)
+        self.time = self.now
+
+        P = e
+        I = e*delta_t
+        z = self.KI*I + self.KP*P
+
+        sat = 0.4
+        if z > sat :
+            z = sat
+        if z < -sat :
+            z = -sat
+        return z
 
 
 def interpolate(anglesa, anglesb, coefa):
