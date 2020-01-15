@@ -13,8 +13,7 @@ class Follow_wall():
         self.K = K
 
 
-    def _callback_scan(self, msg):
-        
+    def _callback_scan(self, msg):   
         self.ranges = msg.ranges
 
     def follow_wall(self):
