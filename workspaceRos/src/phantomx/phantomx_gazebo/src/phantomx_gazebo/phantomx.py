@@ -129,7 +129,7 @@ class PhantomX:
         z = self.KI*I + self.KP*P
 
         saturation = 0.4
-        z = (z > saturation)*saturation + (z < -saturation)*(-saturation)
+        z = (z > saturation)*saturation + (z < -saturation)*(-saturation) + ((z <= saturation) and (z >= -saturation))*z
         return z
 
 
