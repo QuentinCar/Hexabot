@@ -55,3 +55,16 @@ Le dossier `docs` contient tous les documents utiles au projet:
 ### Rapports
 
 Le dossier `reports` doit être rempli avec les rapports d'[objectifs](reports/GoalsTemplate.md) et de [rétrospectives](reports/DebriefTemplate.md) en suivant les deux templates mis à disposition. Ces deux rapports doivent être rédigés respectivement au début et à la fin de chaque sprint.
+
+## Repair Simulation
+```bash
+sudo apt-get update
+sudo apt-get install ros-melodic-effort-controllers
+gedit ~/.ignition/fuel/config.yaml
+```
+
+replace
+url: https://api.ignitionfuel.org
+
+with
+url: https://api.ignitionrobotics.org
