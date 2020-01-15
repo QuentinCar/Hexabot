@@ -4,9 +4,7 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Global Options1
-        - /RobotModel1
-        - /Camera1
+        - /Marker1
       Splitter Ratio: 0.5
     Tree Height: 312
   - Class: rviz/Selection
@@ -27,7 +25,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Camera
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -54,12 +52,12 @@ Visualization Manager:
       Reference Frame: <Fixed Frame>
       Value: true
     - Class: rviz/Axes
-      Enabled: true
+      Enabled: false
       Length: 0.20000000298023224
       Name: Axes
       Radius: 0.019999999552965164
       Reference Frame: <Fixed Frame>
-      Value: true
+      Value: false
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
@@ -140,11 +138,6 @@ Visualization Manager:
           Show Trail: false
           Value: true
         camera:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lamp:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -233,9 +226,18 @@ Visualization Manager:
       Visibility:
         Axes: true
         Grid: true
+        Marker: true
         RobotModel: true
         Value: true
       Zoom Factor: 1
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /visualization_marker
+      Name: Marker
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -264,25 +266,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.8544559478759766
+      Distance: 11.533146858215332
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.1010209172964096
-        Y: 0.029012344777584076
-        Z: 0.10026232153177261
+        X: -0.9811331033706665
+        Y: -0.8677018880844116
+        Z: 1.8772392272949219
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.48520520329475403
+      Pitch: 1.1497968435287476
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.329946756362915
+      Yaw: 2.784947395324707
     Saved: ~
 Window Geometry:
   Camera:
