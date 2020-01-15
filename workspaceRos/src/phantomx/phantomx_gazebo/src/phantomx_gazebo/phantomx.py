@@ -39,25 +39,18 @@ class PhantomX:
                 ns + j + '_position_controller/command', Float64, queue_size=1)
             self._pub_joints[j] = p
             
+        self._pub_cmd_vel = rospy.Publisher(ns + 'cmd_vel', Twist, queue_size=1)
+        self._pub_coord_fissures = rospy.Publisher(ns + 'fissures_coord', Fissures, queue_size=1)    
         self._bridge = CvBridge()
         self._image_sub = rospy.Subscriber("image_raw", Image, self.camera_callback)
 
-        rospy.sleep(1)
-
-        self._pub_cmd_vel = rospy.Publisher(ns + 'cmd_vel', Twist, queue_size=1)
-        self._pub_coord_fissures = rospy.Publisher(ns + 'fissures_coord', Fissures, queue_size=1)
-
         rospy.Subscriber('/scan', LaserScan, self._callback_scan)
         self.scan_data = []
         self.KP = KP
         self.KI = KI
         self.time = float(rospy.Time.to_sec(rospy.Time.now()))
 
-        rospy.Subscriber('/scan', LaserScan, self._callback_scan)
-        self.scan_data = []
-        self.KP = KP
-        self.KI = KI
-        self.time = float(rospy.Time.to_sec(rospy.Time.now()))
+
 
     def set_walk_velocity(self, x, y, t):
         msg = Twist()
@@ -83,6 +76,11 @@ class PhantomX:
         msg.z = coords[:,1]
         self._pub_coord_fissures.publish(msg)
         
+
+    def _callback_scan(self, msg):  
+        self.scan_data = [msg.header.stamp, msg.ranges] 
+        self.now = float(rospy.Time.to_sec(rospy.Time.now()))
+
 
     def _cb_joints(self, msg):
         if self.joints is None:
@@ -117,9 +115,6 @@ class PhantomX:
             self.set_angles(angles)
             r.sleep()
             
-    def _callback_scan(self, msg):  
-        self.scan_data = [msg.header.stamp, msg.ranges] 
-        self.now = float(rospy.Time.to_sec(rospy.Time.now()))
 
     def follow_wall(self):
         ranges = self.scan_data[1]
@@ -140,28 +135,6 @@ class PhantomX:
             z = -sat
         return z
 
-    def _callback_scan(self, msg):  
-        self.scan_data = [msg.header.stamp, msg.ranges] 
-        self.now = float(rospy.Time.to_sec(rospy.Time.now()))
-
-    def follow_wall(self):
-        ranges = self.scan_data[1]
-        val1, val2 = numpy.mean(ranges[60:90]), numpy.mean(ranges[270:300])
-        e = val1 - val2
-
-        delta_t = (self.now - self.time)
-        self.time = self.now
-
-        P = e
-        I = e*delta_t
-        z = self.KI*I + self.KP*P
-
-        sat = 0.4
-        if z > sat :
-            z = sat
-        if z < -sat :
-            z = -sat
-        return z
 
 def interpolate(anglesa, anglesb, coefa):
     z = {}
