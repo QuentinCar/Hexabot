@@ -128,11 +128,8 @@ class PhantomX:
         I = e*delta_t
         z = self.KI*I + self.KP*P
 
-        sat = 0.4
-        if z > sat :
-            z = sat
-        if z < -sat :
-            z = -sat
+        saturation = 0.4
+        z = (z > saturation)*saturation + (z < -saturation)*(-saturation)
         return z
 
 
