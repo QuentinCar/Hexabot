@@ -1,7 +1,6 @@
 import rospy
 import cv2
 import math
-import numpy
 import time
 import numpy as np
 from geometry_msgs.msg import Twist
