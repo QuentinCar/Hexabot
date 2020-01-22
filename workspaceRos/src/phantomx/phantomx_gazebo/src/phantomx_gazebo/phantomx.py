@@ -129,6 +129,7 @@ class PhantomX:
         saturation = 0.4
         # z = (z > saturation)*saturation + (z < -saturation)*(-saturation) + ((z <= saturation) and (z >= -saturation))*z
         z = min(max(z, -saturation), saturation)
+        
         return z
 
 
