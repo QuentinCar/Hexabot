@@ -2,7 +2,6 @@
 
 PO: Cyril Cotsaftis
 
-
 ## Fonctionnalités attendues
 
 - Localisation d'une fissure sur une carte 3D
