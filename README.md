@@ -12,8 +12,8 @@ package hector_slam
 
 ### Démarrer la simulation
 ```bash
-roslaunch phantomx_gazebo phatomx_gazebo.launch
-roslaunch phantomx_description diplay.launch
+roslaunch phantomx_gazebo phantomx_gazebo.launch
+roslaunch phantomx_description display.launch
 rosrun phantomx_gazebo follow_wall.py
 ```
 
