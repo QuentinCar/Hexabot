@@ -1,6 +1,6 @@
 # Objectifs du 22/01/2020
 
-PO: ??
+PO: Cyril Cotsaftis
 
 
 ## Fonctionnalités attendues
