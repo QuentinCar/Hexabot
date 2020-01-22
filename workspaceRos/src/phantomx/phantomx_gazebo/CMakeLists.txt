@@ -7,8 +7,9 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   geometry_msgs
   sensor_msgs
-  gazebo_ros  
+  gazebo_ros
   message_generation
+
   roscpp
   visualization_msgs
 )
@@ -38,7 +39,12 @@ catkin_package(
     gazebo
 )
 
+include_directories(
+# include
+  ${catkin_INCLUDE_DIRS}
+)
 
-add_executable(marker_display src/phantomx_gazebo/marker_display.cpp)
+
+add_executable(marker_display scripts/marker_display.cpp)
 
 target_link_libraries(marker_display ${catkin_LIBRARIES})

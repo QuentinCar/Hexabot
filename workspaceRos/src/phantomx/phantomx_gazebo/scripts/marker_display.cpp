@@ -3,22 +3,27 @@
 
 #include <cmath>
 
-#include <phantomx_gazebo/Fissures>
+#include <phantomx_gazebo/Fissures.h>
 
 //Global variable
 visualization_msgs::Marker points;
 
 
-void pointsCallback(const phantomx_gazebo::Fissures::ConstPtr& msg)
+void pointsCallback(const phantomx_gazebo::Fissures::ConstPtr &msg)
 {
 
 	geometry_msgs::Point p;
-	//Update points (cast possible ??)
-	p.x = msg.x;
-	p.y = msg.y;
-	p.z = msg.z;
 
-	points.points.push_back(p);
+	//Update points (cast possible ??)
+	for (int i=0; i< sizeof(msg->x); i++){
+			p.x = (msg->x)[i];
+			p.y = (msg->y);
+			p.z = (msg->z)[i];
+
+			points.points.push_back(p);
+
+	}
+	        
 }
 
 
@@ -28,7 +33,7 @@ int main( int argc, char** argv )
 	ros::NodeHandle n;
 	ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 
-	ros::Subscriber sub = n.subscribe("node_name", 1000, pointsCallback);
+	ros::Subscriber sub = n.subscribe("/phantomx_gazebo/fissures_coord", 1000, pointsCallback);
 
 
 	points.header.frame_id  = "/base_link";
