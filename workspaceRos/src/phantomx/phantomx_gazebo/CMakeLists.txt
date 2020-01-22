@@ -9,6 +9,8 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   gazebo_ros  
   message_generation
+  roscpp
+  visualization_msgs
 )
 
 find_package(Boost REQUIRED COMPONENTS system)
@@ -37,3 +39,6 @@ catkin_package(
 )
 
 
+add_executable(marker_display src/phantomx_gazebo/marker_display.cpp)
+
+target_link_libraries(marker_display ${catkin_LIBRARIES})
