@@ -42,7 +42,7 @@ class PhantomX:
         self._pub_cmd_vel = rospy.Publisher(ns + 'cmd_vel', Twist, queue_size=1)
         self._pub_coord_fissures = rospy.Publisher(ns + 'fissures_coord', Fissures, queue_size=1)    
         self._bridge = CvBridge()
-        self._image_sub = rospy.Subscriber("image_raw", Image, self.camera_callback)
+        self._image_sub = rospy.Subscriber("/hexabot/camera/image_raw", Image, self.camera_callback)
 
         rospy.Subscriber('/scan', LaserScan, self._callback_scan)
         self.scan_data = []
@@ -60,21 +60,21 @@ class PhantomX:
         self._pub_cmd_vel.publish(msg)
         
     def camera_callback(self, data):
-        try:
-            cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
-        except CvBridgeError as e:
-            print(e)
-        
+        rospy.loginfo("Ok")
+        cv_image = self._bridge.imgmsg_to_cv2(data, "bgr8")
         cv_edges = cv2.Canny(cv_image,6,16)
-        distance = 0
-        horizontal_fov = 0.616
-        pixel_size = 2*distance*math.tan(horizontal_fov/2)/cv_edges.shape[1]
-        coords = np.argwhere(cv_edges>0)*pixel_size
-        msg = Fissures()
-        msg.x = coords[:,0]
-        msg.y = -distance
-        msg.z = coords[:,1]
-        self._pub_coord_fissures.publish(msg)
+        if cv_edges !=[]:
+            rospy.loginfo(cv_edges)
+            ranges = self.scan_data[1]
+            distance = np.mean(ranges[60:90])
+            horizontal_fov = 0.616
+            pixel_size = 2*distance*math.tan(horizontal_fov/2)/cv_edges.shape[1]
+            coords = np.argwhere(cv_edges>0)*pixel_size
+            msg = Fissures()
+            msg.x = coords[:,0]
+            msg.y = -distance
+            msg.z = coords[:,1]
+            self._pub_coord_fissures.publish(msg)
         
 
     def _callback_scan(self, msg):  
