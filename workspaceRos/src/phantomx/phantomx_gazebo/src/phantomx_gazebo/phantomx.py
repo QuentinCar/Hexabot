@@ -118,7 +118,7 @@ class PhantomX:
 
     def follow_wall(self):
         ranges = self.scan_data[1]
-        val1, val2 = np.mean(ranges[60:90]), np.mean(ranges[270:300])
+        val1, val2 = np.mean(ranges[50:80]), np.mean(ranges[280:310])
         e = val1 - val2
 
         delta_t = (self.now - self.time)
