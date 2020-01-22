@@ -3,25 +3,34 @@
 
 #include <cmath>
 
-#include <phantomx_gazebo/Fissures.h>
+#include <phantomx_gazebo/Rifts.h>
 
 //Global variable
 visualization_msgs::Marker points;
 ros::Publisher marker_pub;
 
 
-void pointsCallback(const phantomx_gazebo::Fissures::ConstPtr &msg)
+void pointsCallback(const phantomx_gazebo::Rifts::ConstPtr &msg)
 {
-
 	geometry_msgs::Point p;
 	
-		for (int i=0; i< sizeof(msg->x); i++){
+	
+	//for (int i=0; i<(sizeof(msg->x)/sizeof(msg->x[0])); i++){
+	if(!(msg->x).empty()){
+		int i=0;
+		while((msg->x)[i] != '\0'){
 			p.x = (msg->x)[i];
 			p.y = (msg->y);
 			p.z = (msg->z)[i];
+			ROS_INFO("Rift Found : %f, %f, %f",p.x, p.y, p.z);
 
-			points.points.push_back(p);
+			if (!(p.x > 2000 || p.z > 2000)) {
+				points.points.push_back(p);
+			}
+			
+			i++;
 
+		}
 	}
 	
 	marker_pub.publish(points);
@@ -32,13 +41,15 @@ void pointsCallback(const phantomx_gazebo::Fissures::ConstPtr &msg)
 int main( int argc, char** argv )
 {
 
+	ROS_INFO("Start Up marker_display.cpp");
+
 	ros::init(argc, argv, "rift_points");
 	ros::NodeHandle n;
 	marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 	ros::Subscriber sub = n.subscribe("/phantomx/rifts_coord", 1000, pointsCallback);
 
 
-	points.header.frame_id  = "/base_link";
+	points.header.frame_id  = "base_link";
 	points.header.stamp = ros::Time::now();
 	points.ns = "rift_points";
 	points.action = visualization_msgs::Marker::ADD;
