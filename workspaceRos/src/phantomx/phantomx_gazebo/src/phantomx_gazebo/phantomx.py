@@ -44,7 +44,7 @@ class PhantomX:
         self._image_sub = rospy.Subscriber("/hexabot/camera/image_raw", Image, self.camera_callback)
 
         rospy.Subscriber('/scan', LaserScan, self._callback_scan)
-        self.scan_data = []
+        self.ranges = [0]*360
         self.KP = KP
         self.KI = KI
         self.time = float(rospy.Time.to_sec(rospy.Time.now()))
@@ -63,8 +63,7 @@ class PhantomX:
         cv_blur = cv2.GaussianBlur(cv_image,(5,5),0)
         cv_denoise = cv2.medianBlur(cv_blur, 5)
         cv_edges = cv2.Canny(cv_denoise,6,16)
-        ranges = self.scan_data[1]
-        distance = np.mean(ranges[80:110])
+        distance = np.mean(self.ranges[80:110])
         horizontal_fov = 0.616
         pixel_size = 2*distance*math.tan(horizontal_fov/2)/cv_edges.shape[1]
         coords = np.argwhere(cv_edges>0)*pixel_size
@@ -76,9 +75,9 @@ class PhantomX:
         
 
     def _callback_scan(self, msg):  
-        self.scan_data = [msg.header.stamp, msg.ranges] 
+        self.ranges = msg.ranges
         self.now = float(rospy.Time.to_sec(rospy.Time.now()))
-
+        
 
     def _cb_joints(self, msg):
         if self.joints is None:
@@ -115,8 +114,7 @@ class PhantomX:
             
 
     def follow_wall(self):
-        ranges = self.scan_data[1]
-        val1, val2 = np.mean(ranges[50:80]), np.mean(ranges[280:310])
+        val1, val2 = np.mean(self.ranges[50:80]), np.mean(self.ranges[280:310])
         e = val1 - val2
 
         delta_t = (self.now - self.time)
@@ -129,7 +127,7 @@ class PhantomX:
         saturation = 0.4
         # z = (z > saturation)*saturation + (z < -saturation)*(-saturation) + ((z <= saturation) and (z >= -saturation))*z
         z = min(max(z, -saturation), saturation)
-        
+
         return z
 
 
