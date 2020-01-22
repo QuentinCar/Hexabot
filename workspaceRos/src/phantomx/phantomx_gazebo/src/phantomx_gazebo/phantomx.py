@@ -61,7 +61,8 @@ class PhantomX:
     def camera_callback(self, data):
         rospy.loginfo("Ok")
         cv_image = self._bridge.imgmsg_to_cv2(data, "bgr8")
-        cv_edges = cv2.Canny(cv_image,6,16)
+        cv_denoise = cv2.fastNlMeansDenoising(cv_image, h = 10)
+        cv_edges = cv2.Canny(cv_denoise,6,16)
         if cv_edges !=[]:
             rospy.loginfo(cv_edges)
             ranges = self.scan_data[1]
