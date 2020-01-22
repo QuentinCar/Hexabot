@@ -8,9 +8,9 @@ from sensor_msgs.msg import JointState
 from std_msgs.msg import Float64
 from sensor_msgs.msg import LaserScan
 from sensor_msgs.msg import Image
-from cv_bridge import CvBridge, CvBridgeError
+from cv_bridge import CvBridge
 
-from phantomx_gazebo.msg import Fissures
+from phantomx_gazebo.msg import Rifts
 
 
 class PhantomX:
@@ -39,7 +39,7 @@ class PhantomX:
             self._pub_joints[j] = p
             
         self._pub_cmd_vel = rospy.Publisher(ns + 'cmd_vel', Twist, queue_size=1)
-        self._pub_coord_fissures = rospy.Publisher(ns + 'fissures_coord', Fissures, queue_size=1)    
+        self._pub_rifts_coords = rospy.Publisher(ns + 'rifts_coord', Rifts, queue_size=1)    
         self._bridge = CvBridge()
         self._image_sub = rospy.Subscriber("/hexabot/camera/image_raw", Image, self.camera_callback)
 
@@ -59,22 +59,20 @@ class PhantomX:
         self._pub_cmd_vel.publish(msg)
         
     def camera_callback(self, data):
-        rospy.loginfo("Ok")
         cv_image = self._bridge.imgmsg_to_cv2(data, "bgr8")
-        cv_denoise = cv2.fastNlMeansDenoising(cv_image, h = 10)
+        cv_blur = cv2.GaussianBlur(cv_image,(5,5),0)
+        cv_denoise = cv2.medianBlur(cv_blur, 5)
         cv_edges = cv2.Canny(cv_denoise,6,16)
-        if cv_edges !=[]:
-            rospy.loginfo(cv_edges)
-            ranges = self.scan_data[1]
-            distance = np.mean(ranges[60:90])
-            horizontal_fov = 0.616
-            pixel_size = 2*distance*math.tan(horizontal_fov/2)/cv_edges.shape[1]
-            coords = np.argwhere(cv_edges>0)*pixel_size
-            msg = Fissures()
-            msg.x = coords[:,0]
-            msg.y = -distance
-            msg.z = coords[:,1]
-            self._pub_coord_fissures.publish(msg)
+        ranges = self.scan_data[1]
+        distance = np.mean(ranges[80:110])
+        horizontal_fov = 0.616
+        pixel_size = 2*distance*math.tan(horizontal_fov/2)/cv_edges.shape[1]
+        coords = np.argwhere(cv_edges>0)*pixel_size
+        msg = Rifts()
+        msg.x = coords[:,0]
+        msg.y = -distance
+        msg.z = coords[:,1]
+        self._pub_rifts_coords.publish(msg)
         
 
     def _callback_scan(self, msg):  

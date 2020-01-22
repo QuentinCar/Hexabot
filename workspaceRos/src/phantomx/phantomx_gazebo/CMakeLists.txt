@@ -21,7 +21,7 @@ catkin_python_setup()
 
 add_message_files(
 	FILES
-	Fissures.msg
+	Rifts.msg
 )
 
 generate_messages(
