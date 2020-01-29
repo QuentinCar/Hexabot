@@ -14,8 +14,7 @@ package hector_slam
 ```bash
 roslaunch phantomx_gazebo phantomx_gazebo.launch
 roslaunch phantomx_description display.launch
-rosrun phantomx_gazebo follow_wall.py
-rosrun phantomx_gazebo marker_display
+
 
 ```
 
