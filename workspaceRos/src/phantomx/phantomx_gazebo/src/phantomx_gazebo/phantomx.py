@@ -20,6 +20,7 @@ class PhantomX:
         self.ns = ns
         self.joints = None
         self.angles = None
+        self.now = None
 
         self._sub_joints = rospy.Subscriber(
             ns + 'joint_states', JointState, self._cb_joints, queue_size=1)
