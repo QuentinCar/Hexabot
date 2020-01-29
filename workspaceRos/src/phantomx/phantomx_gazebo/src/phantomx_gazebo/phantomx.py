@@ -68,11 +68,13 @@ class PhantomX:
         pixel_size = 2*distance*math.tan(horizontal_fov/2)/cv_edges.shape[1]
         coords = np.argwhere(cv_edges>0)*pixel_size
         msg = Rifts()
+        r = rospy.Rate(1)
         msg.x = coords[:,0]
         msg.y = -distance
         msg.z = coords[:,1]
+
         self._pub_rifts_coords.publish(msg)
-        
+        r.sleep()
 
     def _callback_scan(self, msg):  
         self.ranges = msg.ranges
