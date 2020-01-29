@@ -22,9 +22,9 @@ void pointsCallback(const phantomx_gazebo::Rifts::ConstPtr &msg)
 			p.x = (msg->x)[i];
 			p.y = (msg->y);
 			p.z = (msg->z)[i];
-			ROS_INFO("Rift Found : %f, %f, %f",p.x, p.y, p.z);
+			//ROS_INFO("Rift Found : %f, %f, %f",p.x, p.y, p.z);
 
-			if (!(p.x > 2000 || p.z > 2000)) {
+			if (abs(p.x) < 2000 && abs(p.z) < 2000) {
 				points.points.push_back(p);
 			}
 			
@@ -46,7 +46,7 @@ int main( int argc, char** argv )
 	ros::init(argc, argv, "rift_points");
 	ros::NodeHandle n;
 	marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 10);
-	ros::Subscriber sub = n.subscribe("/phantomx/rifts_coord", 1000, pointsCallback);
+	ros::Subscriber sub = n.subscribe("/phantomx/rifts_coord", 10, pointsCallback);
 
 
 	points.header.frame_id  = "base_link";

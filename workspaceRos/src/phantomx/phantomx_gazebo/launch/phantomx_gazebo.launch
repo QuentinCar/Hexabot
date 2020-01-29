@@ -17,10 +17,18 @@
 
     <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model phantomx -z 0.5 -param robot_description"/>
 
+
     <include file="$(find phantomx_control)/launch/phantomx_control.launch"/>
 
     <node name="phantomx_walker" pkg="phantomx_gazebo" type="walker.py" />
+
     <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">
     <param name="odom_frame" value="base_link" />
     </node>
+
+    <node name="phantomx_follow_wall" pkg="phantomx_gazebo" type="follow_wall.py"/>
+
+    <node name="phantomx_marker" pkg="phantomx_gazebo" type="marker_display"/>
+
+
 </launch>
