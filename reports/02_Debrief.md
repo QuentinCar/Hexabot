@@ -34,8 +34,6 @@ Focus sur l'intégration des tâches au système et répartition du travail à r
 
 Etablissement des tâches au début du briefing, SANS les commencer.
 Répartition des tâches dans la foulée avec l'écoute de tous.
-<<<<<<< HEAD
+
 Effectuer une pull request pour tout le monde, dès le briefing afin que chacun soit à jour avec la branche master.
-=======
-Effectuer une pull request pour tout le monde, dès le briefing afin que chacun soit à jour avec la branche master.
->>>>>>> Update 02_Debrief.md
+
