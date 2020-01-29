@@ -22,9 +22,11 @@ void pointsCallback(const phantomx_gazebo::Rifts::ConstPtr &msg)
 			p.x = (msg->x)[i];
 			p.y = (msg->y);
 			p.z = (msg->z)[i];
-			//ROS_INFO("Rift Found : %f, %f, %f",p.x, p.y, p.z);
 
-			if (abs(p.x) < 2000 && abs(p.z) < 2000) {
+			if (abs(p.x) < 100 && abs(p.z) < 100 && abs(p.x) > 1.5) {
+				if (abs(p.x) < 5){
+					ROS_INFO("Rift Found : %f, %f, %f", p.x, p.y, p.z);
+				}
 				points.points.push_back(p);
 			}
 			
@@ -63,8 +65,8 @@ int main( int argc, char** argv )
 
 
 	// POINTS markers use x and y scale for width/height respectively
-	points.scale.x = 0.2;
-	points.scale.y = 0.2;
+	points.scale.x = 0.1;
+	points.scale.y = 0.1;
 
 	// Points are green
 	points.color.g = 1.0f;
