@@ -49,7 +49,7 @@ int main( int argc, char** argv )
 	ros::Subscriber sub = n.subscribe("/phantomx/rifts_coord", 10, pointsCallback);
 
 
-	points.header.frame_id  = "base_link";
+	points.header.frame_id  = "map";
 	points.header.stamp = ros::Time::now();
 	points.ns = "rift_points";
 	points.action = visualization_msgs::Marker::ADD;

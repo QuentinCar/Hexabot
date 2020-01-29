@@ -3,6 +3,8 @@ import cv2
 import math
 import time
 import numpy as np
+from scipy.linalg import expm
+
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Float64
@@ -10,7 +12,17 @@ from sensor_msgs.msg import LaserScan
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 
+import tf
+from tf.transformations import euler_from_quaternion
+
 from phantomx_gazebo.msg import Rifts
+
+def euler_mat(phi, theta, psi):
+    Ad_i = np.array([[0, 0, 0],[0,0,-1],[0,1,0]])
+    Ad_j = np.array([[0,0,1],[0,0,0],[-1,0,0]])
+    Ad_k = np.array([[0,-1,0],[1,0,0],[0,0,0]])
+    M = np.dot(np.dot(expm(psi*Ad_k), expm(theta*Ad_j)), expm(psi*Ad_i))
+    return(M)
 
 
 class PhantomX:
@@ -49,6 +61,8 @@ class PhantomX:
         self.KP = KP
         self.KI = KI
         self.time = float(rospy.Time.to_sec(rospy.Time.now()))
+        
+        self.listener = tf.TransformListener()
 
 
 
@@ -68,11 +82,35 @@ class PhantomX:
         horizontal_fov = 0.616
         pixel_size = 2*distance*math.tan(horizontal_fov/2)/cv_edges.shape[1]
         coords = np.argwhere(cv_edges>0)*pixel_size
+        
+        (trans,rot) = self.listener.lookupTransform('/map', '/base_link', rospy.Time(0))
+
+        rot = euler_from_quaternion(rot)
+        rot = euler_mat(rot[0], rot[1], rot[2])
+
         msg = Rifts()
         r = rospy.Rate(1)
-        msg.x = coords[:,0]
-        msg.y = -distance
-        msg.z = coords[:,1]
+        coords = np.array([coords[:, 0], [-distance]*len(coords), coords[:, 1]])
+        # rospy.loginfo(coords)
+        # rospy.loginfo(rot)
+        # rospy.loginfo(trans)
+        coord_rifts_map=[]
+        if coords.shape[1]>0:
+            coord_rifts_map= np.dot(rot, coords)
+            coord_rifts_map[0, :]+=trans[0]
+            coord_rifts_map[1,:]+=trans[1]
+            coord_rifts_map[2,:]+=trans[2]
+            msg.x = coord_rifts_map[0,:]
+            msg.y = coord_rifts_map[1,0]
+            msg.z = coord_rifts_map[2,:]
+        else:
+            msg.x = []
+            msg.y = -1
+            msg.z = []
+            
+        # msg.x = coords[:,0]
+        # msg.y = -distance
+        # msg.z = coords[:,1]
 
         self._pub_rifts_coords.publish(msg)
         r.sleep()
