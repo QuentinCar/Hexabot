@@ -28,7 +28,7 @@
 
     <node name="phantomx_follow_wall" pkg="phantomx_gazebo" type="follow_wall.py" output="screen"/>
 
-    <node name="phantomx_marker" pkg="phantomx_gazebo" type="marker_display"/>
+    <node name="phantomx_marker" pkg="phantomx_gazebo" type="marker_display" output="screen"/>
 
 
 </launch>
